@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { message, Button, Table, Tag, Popconfirm, Row, Col } from 'antd';
-import { getLinhVucName, getGrade, getFinalComment, precise } from '../Utils.js'
-
+import { getLinhVucName, getGrade, getFinalComment, precise } from '../Utils.js';
+import {
+    useParams,
+    useHistory
+  } from "react-router-dom";
+import { LeftOutlined } from '@ant-design/icons';
 const columns = [
     {
         title: 'Lĩnh vực đề tài',
@@ -130,9 +134,11 @@ const columns = [
 const ResultTable = () => {
     const [dataSource, setDataSource] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    let { id } = useParams();
+    let history = useHistory();
 
     useEffect(() => {
-        fetch("/api/getdetai/1", {
+        fetch("/api/getdetai/" + id, {
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
@@ -169,7 +175,16 @@ const ResultTable = () => {
         })
     }, [])
 
-    return <Table columns={columns} dataSource={dataSource} loading={isLoading} />
+    const handleGoBack = () => {
+        history.goBack();
+    }
+
+    return (
+    <React.Fragment>
+    <Button type="primary" icon={<LeftOutlined />} onClick={handleGoBack} />
+        <Table columns={columns} dataSource={dataSource} loading={isLoading} />    
+    </React.Fragment>
+    )
 }
 
 export default ResultTable;

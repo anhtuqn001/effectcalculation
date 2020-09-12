@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { message, Button, Table, Tag, Modal, Form, Input, Select } from 'antd';
 
-const CreateModal = ({ isOpen, hide }) => {
+const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
     const [tendetai, setTendetai] = useState('');
     const [tenchunhiem, setTenchunhiem] = useState('');
     const [cqchutri, setCqchutri] = useState('');
     const [cqtrienkhai, setCqtrienkhai] = useState('');
     const [linhvuc, setLinhvuc] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleTendetaiChange = (e) => {
         setTendetai(e.target.value);
@@ -31,6 +32,7 @@ const CreateModal = ({ isOpen, hide }) => {
     }
 
     const handleSubmit = () => {
+        setIsLoading(true);
         let data = {
             tendetai,
             tenchunhiem,
@@ -50,9 +52,11 @@ const CreateModal = ({ isOpen, hide }) => {
             if (!res.ok) return Promise.reject(res);
             return res.json();
         }).then((result) => {
-            // let { detais } = result;
-            // setDetais(detais);
-            console.log(result);
+            let { detai } = result;
+            appendNewDetai(detai);
+            setIsLoading(false);
+            hide();
+            message.success('Tạo mới đề tài thành công');
         }, (error) => {
             if (error.status == 401) {
                 // localStorage.removeItem("token");
@@ -74,9 +78,9 @@ const CreateModal = ({ isOpen, hide }) => {
                 <Button
                     key="submit"
                     type="primary"
-                    // loading={isLoading}
-                    // style={{ background: "#389e0d", borderColor: "green" }}
+                    loading={isLoading}
                     onClick={handleSubmit}
+                    style={{background: '#389e0d', borderColor:'#389e0d'}}
                 >
                     Tạo
                 </Button>,

@@ -4,8 +4,20 @@ import 'antd/dist/antd.css';
 import { message, Button, Table, Tag, Popconfirm, Row, Col } from 'antd';
 import CreateModal from './CreateModal.js';
 import EditModal from './EditModal.js';
+import {
+    Link
+} from "react-router-dom";
 
-
+const styles = {
+    button : {
+        margin: '2px'
+    },
+    longButton : {
+        margin: '2px',
+        paddingLeft: '5px',
+        paddingRight: '5px'
+    }
+}
 
 
 const DeTaiList = () => {
@@ -30,6 +42,7 @@ const DeTaiList = () => {
             let { detais } = result;
             setDetais(detais);
             setIsLoading(false);
+            console.log(detais);
         }, (error) => {
             if (error.status == 401) {
                 // localStorage.removeItem("token");
@@ -78,6 +91,10 @@ const DeTaiList = () => {
         }
     }
 
+    const appendNewDetai = (detai) => {
+        setDetais([...detais, detai]);
+    } 
+
     const changeEditedDetai = (editedDetai) => {
         let { id } = editedDetai;
         let detaiIndex = detais.findIndex(i => i.id == id);
@@ -103,7 +120,7 @@ const DeTaiList = () => {
             },
             body: JSON.stringify(data)
         }).then(res => {
-            if (!res.ok) return Promise.reject(res);
+            if (!res.ok) return Promise.reject(res)
             return res.json();
         }).then((result) => {
             if(result.success) {
@@ -122,12 +139,21 @@ const DeTaiList = () => {
         });
     }
 
+    const checkResultStatus = (id) => {
+       let detai = detais.find(i => i.id == id);
+       if(detai != null) {
+        let { diemdetai } = detai;
+            return !!diemdetai;
+       }
+       return false;
+    }
+
     const columns = [
         {
             title: 'Tên đề tài',
             dataIndex: 'tendetai',
             key: 'tendetai',
-            width: '35%'
+            width: '30%'
         },
         {
             title: 'Tên chủ nhiệm',
@@ -191,13 +217,14 @@ const DeTaiList = () => {
             title: '',
             dataIndex: 'id',
             key: 'id',
-            width: '13%',
+            width: '18%',
             render: id => {
                 return (
                     <React.Fragment>
                         <Button
                             type="primary"
                             onClick={(e) => { showEditModal(id) }}
+                            style={styles.button}
                         >Sửa</Button>
                         <Popconfirm
                             placement="top"
@@ -208,10 +235,14 @@ const DeTaiList = () => {
                             okButtonProps={{type: 'danger', loading: isDeleteButtonLoading}}
                         >
                             <Button
-                            type="danger">
+                            type="danger"
+                            style={styles.button}
+                            >
                             Xóa
                             </Button>
                         </Popconfirm>
+                        <Link to={`/khaosat/${id}`}><Button type="primary" style={styles.longButton}>Khảo sát</Button></Link>
+                        {checkResultStatus(id) && <Link to={`/ketqua/${id}`}><Button type="danger" style={styles.longButton}>Kết quả</Button></Link>}
                     </React.Fragment>
                 )
             }
@@ -222,10 +253,10 @@ const DeTaiList = () => {
         <React.Fragment>
             <Row style={{marginTop: '5px', marginBottom: '5px'}}>
                 <Col span={2} offset={22}>
-                    <Button type="primary" onClick={showCreateModal} style={{background: '#389e0d', borderColor:'#389e0d'}}>Thêm mới</Button>
+                    <Button type="primary" onClick={showCreateModal} style={{background: '#389e0d', borderColor:'#389e0d'}}>Thêm đề tài</Button>
                 </Col>
             </Row>
-            <CreateModal isOpen={isCreateModalOpen} hide={hideCreateModal} />
+            <CreateModal isOpen={isCreateModalOpen} hide={hideCreateModal} appendNewDetai={appendNewDetai}/>
             <EditModal isOpen={isEditModalOpen} hide={hideEditModal} editDetai={editDetai} changeEditedDetai={changeEditedDetai} />
             <Table dataSource={detais} columns={columns} loading={isLoading}/>
         </React.Fragment>

@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { List, Typography, Divider, Radio, Row, Input, Col, Button, message, Select } from 'antd';
+import { List, Typography, Divider, Radio, Row, Input, Col, Button, message, Select} from 'antd';
 const { Text } = Typography;
 import { calculateThanhphanScore, calculateTieuchiScore, calculateDetaiScore, flattenThanhphans, checkIfDone } from '../Utils.js'
-
+import {
+    useParams,
+    useHistory
+  } from "react-router-dom";
+import { LeftOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
-const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, handleOnNext, donvi, handleDonviChange }) => {
+
+const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, handleOnNext, donvi, handleDonviChange, id, tendetai }) => {
     const [thanhphans, setThanhphans] = useState([]);
     const [isDone, setIsDone] = useState(false);
+    let history = useHistory();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     useEffect(() => {
@@ -26,12 +33,8 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
 
     useEffect(() => {
         if(checkIfDone(flattenThanhphans(tieuchis))) {
-            console.log('done');
-            console.log('thanhphans', thanhphans);
-            console.log('flattenThanhphans(tieuchis)', flattenThanhphans(tieuchis))
             setIsDone(true);
         } else {
-            console.log('not done');
             setIsDone(false);
         }
     }, [tieuchis])
@@ -63,10 +66,11 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
     }
 
     const handleSubmit = () => {
+        setIsSubmitting(true);
         let formattedTieuchis = tieuchis.map(tieuchi => formatTieuchi(tieuchi));
         let diemdetai = calculateDetaiScore(1, formattedTieuchis);
         let data = {
-            detaiId: 1,
+            detaiId: id,
             diemdetai,
             tieuchis: formattedTieuchis
         };
@@ -83,6 +87,7 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
             return res.json();
         }).then((result) => {
             message.success("Lưu thành công");
+            setIsSubmitting(false);
         }, (error) => {
             if (error.status == 401) {
                 // localStorage.removeItem("token");
@@ -115,13 +120,17 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
         }
     }
 
+    const handleGoBack = () => {
+        history.goBack();
+    }
 
 
     return (
         <React.Fragment>
             {/* <Button type="primary" onClick={test}>Test Button</Button> */}
             <Row style={{ margin: '10px 0px' }}>
-                <Col span={4}>
+                <Col span={1}><Button type="primary" icon={<LeftOutlined />} onClick={handleGoBack}/></Col>
+                <Col span={4} offset={1}>
                     <Select value={donvi} onChange={handleDonviChange}
                         style={{ width: 150 }}
                     >
@@ -129,8 +138,8 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
                         <Option value={2}>Đơn vị triển khai</Option>
                     </Select>
                 </Col>
-                <Col offset={6} span={4}>
-                    <Button type="primary" style={isDone ? {background: '#389e0d', borderColor: "#389e0d"} : {background: '#d9f7be', borderColor: "#d9f7be"}} disabled={!isDone} onClick={handleSubmit}>Lưu kết quả</Button>
+                <Col offset={4} span={4}>
+                    <Button type="primary" style={isDone ? {background: '#389e0d', borderColor: "#389e0d"} : {background: '#d9f7be', borderColor: "#d9f7be"}} disabled={!isDone} onClick={handleSubmit} loading={isSubmitting}>Lưu kết quả</Button>
                 </Col>
                 <Col offset={6} span={4} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <div className="steps-action">
@@ -142,6 +151,9 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
                             </Button>
                     </div>
                 </Col>
+            </Row>
+            <Row>
+                <Text strong>ĐỀ TÀI:</Text><Text style={{marginLeft: '5px'}}>{tendetai}</Text>
             </Row>
             <List
                 itemLayout="vertical"

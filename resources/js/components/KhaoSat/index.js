@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { List, Typography, Divider, message, Steps, Button, Row, Col } from 'antd';
 import ListCauHoi from './listcauhoi.js';
+import {
+    useParams,
+  } from "react-router-dom";
 
 import { currentDonvi1, currentDonvi2 } from '../Utils.js'
 import './index.css';
@@ -19,14 +22,16 @@ const data = [
 
 const KhaoSat = () => {
     const [current, setCurrent] = useState(0);
-    const [detai, setDetai] = useState({});
+    // const [detai, setDetai] = useState({});
     const [tieuchis, setTieuchis] = useState([]);
     const [donvi, setDonvi] = useState(1);
     const [current1, setCurrent1] = useState(0);
     const [current2, setCurrent2] = useState(0);
-    const [filteredTieuchis, setFilteredTieuchis] = useState([])
+    const [filteredTieuchis, setFilteredTieuchis] = useState([]);
+    const [tendetai, setTendetai] = useState('');
+    let { id } = useParams();
     useEffect(() => {
-        fetch("/api/getdetai/1", {
+        fetch("/api/getdetai/" + id, {
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
@@ -35,9 +40,9 @@ const KhaoSat = () => {
             return res.json();
         }).then((result) => {
             let { detai } = result;
-            let { tieuchis } = detai;
-            setDetai(detai);
-            setTieuchis(tieuchis)
+            let { tieuchis, tendetai } = detai;
+            setTendetai(tendetai);
+            setTieuchis(tieuchis);
             console.log(tieuchis);
         }, (error) => {
             if (error.status == 401) {
@@ -47,7 +52,8 @@ const KhaoSat = () => {
             } else {
                 message.error("Lỗi hệ thống");
             }
-        })
+        });
+        
     }, [])
 
     const next = () => {
@@ -89,7 +95,7 @@ const KhaoSat = () => {
                     <Step key={item.id} title={item.title} description={item.tentieuchi} />
                 ))}
             </Steps>
-            <ListCauHoi donvi={donvi} tieuchis={tieuchis} tieuchi={!!tieuchis.length ? (donvi == 1 ? tieuchis[current1] : tieuchis[current2]) : {}} tieuchisLength={tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange}/>
+            <ListCauHoi donvi={donvi} tendetai={tendetai} tieuchis={tieuchis} tieuchi={!!tieuchis.length ? (donvi == 1 ? tieuchis[current1] : tieuchis[current2]) : {}} tieuchisLength={tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange} id={id}/>
         </React.Fragment>
     )
 }

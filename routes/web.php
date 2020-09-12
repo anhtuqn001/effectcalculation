@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('{reactRoutes}', function () {
+    return view('react'); // your start view
+})->where('reactRoutes', '^((?!api).)*$'); // except 'api' word
+
 Route::get('/', function () {
     return view('react');
 });
