@@ -22,13 +22,14 @@ const data = [
 
 const KhaoSat = () => {
     const [current, setCurrent] = useState(0);
-    // const [detai, setDetai] = useState({});
+    const [detai, setDetai] = useState({});
     const [tieuchis, setTieuchis] = useState([]);
     const [donvi, setDonvi] = useState(1);
     const [current1, setCurrent1] = useState(0);
     const [current2, setCurrent2] = useState(0);
     const [filteredTieuchis, setFilteredTieuchis] = useState([]);
-    const [tendetai, setTendetai] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    // const [tendetai, setTendetai] = useState('');
     let { id } = useParams();
     useEffect(() => {
         fetch("/api/getdetai/" + id, {
@@ -40,10 +41,9 @@ const KhaoSat = () => {
             return res.json();
         }).then((result) => {
             let { detai } = result;
-            let { tieuchis, tendetai } = detai;
-            setTendetai(tendetai);
-            setTieuchis(tieuchis);
-            console.log(tieuchis);
+            console.log(detai);
+            setDetai(detai);
+            setIsLoading(false);
         }, (error) => {
             if (error.status == 401) {
                 // localStorage.removeItem("token");
@@ -88,16 +88,27 @@ const KhaoSat = () => {
         setCurrent2(0);
     }
 
+    const updateDetai = (detai) => {
+        if(detai != null) {
+            setDetai({...detai});
+        }
+    }
+
+    if(detai != null) {
+        console.log()
     return (
         <React.Fragment>
             <Steps current={donvi == 1 ? current1 : current2} size="small">
-                {!!tieuchis.length && tieuchis.map(item => (
+                {!!detai.tieuchis && detai.tieuchis.map(item => (
                     <Step key={item.id} title={item.title} description={item.tentieuchi} />
                 ))}
             </Steps>
-            <ListCauHoi donvi={donvi} tendetai={tendetai} tieuchis={tieuchis} tieuchi={!!tieuchis.length ? (donvi == 1 ? tieuchis[current1] : tieuchis[current2]) : {}} tieuchisLength={tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange} id={id}/>
+            <ListCauHoi donvi={donvi} tendetai={detai.tendetai} haveResult={!!detai.diemdetai} tieuchis={detai.tieuchis} tieuchi={!!detai.tieuchis ? (donvi == 1 ? detai.tieuchis[current1] : detai.tieuchis[current2]) : {}} tieuchisLength={!!detai.tieuchis && detai.tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange} id={detai.id} updateDetai={updateDetai} isLoading={isLoading}/>
         </React.Fragment>
     )
+    } else {
+        return <div>Loading.....</div>
+    }
 }
 
 export default KhaoSat;

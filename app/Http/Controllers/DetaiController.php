@@ -10,7 +10,7 @@ class DetaiController extends Controller
 {
     public function index() {
         try {
-            $detais = Detai::all();
+            $detais = Detai::with('tieuchis')->get();
         } catch(Exception $e) {
             return response()->json([
                 'error'=> $e->getMessage()
@@ -105,7 +105,9 @@ class DetaiController extends Controller
        try {
         $detai = Detai::with('tieuchis')->findOrFail($id);
         foreach($detai->tieuchis as $tieuchi) {
-            $detaiTieuchi = DetaiTieuchi::with('thanhphans')->findOrFail($tieuchi->pivot->id);
+            $detaiTieuchi = DetaiTieuchi::with(array('thanhphans' => function($query) {
+                    $query->orderBy('thutu');
+            }))->findOrFail($tieuchi->pivot->id);
             $tieuchi->thanhphans = $detaiTieuchi->thanhphans;
             }
         } catch(Exception $e) {
@@ -122,7 +124,7 @@ class DetaiController extends Controller
         try {
             $detaiId = $request->input('detaiId');
             $tieuchis = $request->input('tieuchis');
-            $detai = Detai::findOrFail($detaiId);
+            $detai = Detai::with('tieuchis')->findOrFail($detaiId);
             $detai->diemdetai = $request->input('diemdetai');
             $detai->save();
             $testArr = [];
@@ -133,8 +135,12 @@ class DetaiController extends Controller
                 array_push($testArr, $detaiTieuchi);
                 $thanhphans = $tieuchi['thanhphans'];
                 foreach($thanhphans as $thanhphan) {
-                    $detaiTieuchi->thanhphans()->updateExistingPivot($thanhphan['id'], ['result1' => $thanhphan['result1'], 'result2' => $thanhphan['result2'], 'diemthanhphan1' => $thanhphan['diemthanhphan1']]);
+                    $detaiTieuchi->thanhphans()->updateExistingPivot($thanhphan['id'], ['result1' => $thanhphan['result1'], 'result2' => $thanhphan['result2'], 'diemthanhphan1' => $thanhphan['diemthanhphan1'], 'additional1' => $thanhphan['additional1'], 'additional2' => $thanhphan['additional2'], 'additional3' => $thanhphan['additional3'], 'additional4' => $thanhphan['additional4'], 'additional5' => $thanhphan['additional5'], 'additional6' => $thanhphan['additional6'], 'additional7' => $thanhphan['additional7'], 'additional8' => $thanhphan['additional8']]);
                 }
+            }
+            foreach($detai->tieuchis as $tieuchi) {
+            $detaiTieuchi = DetaiTieuchi::with('thanhphans')->findOrFail($tieuchi->pivot->id);
+            $tieuchi->thanhphans = $detaiTieuchi->thanhphans;
             }
         } catch (Exception $e) {
             return response()->json([
@@ -142,7 +148,7 @@ class DetaiController extends Controller
             ], 500);
         }
         return response()->json([
-            'success' => $testArr
+            'detai' => $detai
         ], 200);
     }
 

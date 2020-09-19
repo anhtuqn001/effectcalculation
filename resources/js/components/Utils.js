@@ -1,31 +1,31 @@
 export const calculateThanhphanScore = (thanhphan) => {
-    let { loaithanhphan, mathanhphan, pivot: {result1, result2} } = thanhphan;
+    let { loaithanhphan, mathanhphan, pivot: { result1, result2 } } = thanhphan;
     let score = 0;
-    if(result1 == null && result2 == null) return null;
-    if(loaithanhphan == 1) {
+    if (result1 == null && result2 == null) return null;
+    if (loaithanhphan == 1) {
         let result = result1 || result2;
-        if(result == 0) {
+        if (result == 0) {
             score = 0;
-        } else if(result == 1) {
+        } else if (result == 1) {
             score = 100;
         }
     }
-    if(loaithanhphan == 3) {
+    if (loaithanhphan == 3) {
         let result = result1 || result2;
-        switch(result) {
+        switch (result) {
             case 0:
                 score = 0;
                 break;
-            case 1: 
+            case 1:
                 score = 20;
                 break;
             case 2:
                 score = 40;
                 break;
-            case 3: 
+            case 3:
                 score = 60;
                 break;
-            case 4: 
+            case 4:
                 score = 80;
                 break;
             case 5:
@@ -33,17 +33,17 @@ export const calculateThanhphanScore = (thanhphan) => {
                 break;
         }
     }
-    if(loaithanhphan == 2) {
+    if (loaithanhphan == 2) {
         let result = 0;
-        if(result1 !== null) {
+        if (result1 !== null) {
             result += parseInt(result1);
         }
-        if(result2 !== null) {
+        if (result2 !== null) {
             result += parseInt(result2);
         }
-        if(result == 0) {
+        if (result == 0) {
             score = 0;
-        } else if(result >= loaithanhphan2[mathanhphan].highestScore) {
+        } else if (result >= loaithanhphan2[mathanhphan].highestScore) {
             score = 100;
         } else {
             score = loaithanhphan2[mathanhphan][result.toString()];
@@ -53,44 +53,44 @@ export const calculateThanhphanScore = (thanhphan) => {
 }
 
 const loaithanhphan2 = {
-    H1 : {
+    H1: {
         highestScore: 2,
         '1': 50
     },
-    H2 : {
+    H2: {
         highestScore: 2,
         '1': 50
     },
-    H3 : {
+    H3: {
         highestScore: 2,
         '1': 50
     },
-    H9 : {
+    H9: {
         highestScore: 2,
         '1': 50
     },
-    C6 : {
+    C6: {
         highestScore: 1
     },
-    D2 : {
+    D2: {
         highestScore: 1
     },
-    D3 : {
+    D3: {
         highestScore: 1
     },
-    D4 : {
+    D4: {
         highestScore: 1
     },
-    D5 : {
+    D5: {
         highestScore: 1
     },
-    D6 : {
+    D6: {
         highestScore: 1
     }
 }
 
-export const currentDonvi1 = [0,1,5,6];
-export const currentDonvi2 = [0,1,2,3,4,5,6];
+export const currentDonvi1 = [0, 1, 5, 6];
+export const currentDonvi2 = [0, 1, 2, 3, 4, 5, 6];
 
 // Chú thích lĩnh vực
 // 1 : Khoa học Nông nghiệp
@@ -99,7 +99,7 @@ export const currentDonvi2 = [0,1,2,3,4,5,6];
 // 4 : Khoa học Y dược
 // 5 : Khoa học Kỹ thuật và Công nghệ
 const trongsoTieuchi = {
-    1 : {
+    1: {
         1: 0.2,
         2: 0.2,
         3: 0.2,
@@ -108,7 +108,7 @@ const trongsoTieuchi = {
         6: 0.0667,
         7: 0.1333
     },
-    2 : {
+    2: {
         1: 0.2307,
         2: 0.1538,
         3: 0.077,
@@ -117,7 +117,7 @@ const trongsoTieuchi = {
         6: 0.2307,
         7: 0.077
     },
-    3 : {
+    3: {
         1: 0.1333,
         2: 0.0667,
         3: 0.2,
@@ -126,7 +126,7 @@ const trongsoTieuchi = {
         6: 0.2,
         7: 0.1333
     },
-    4 : {
+    4: {
         1: 0.2143,
         2: 0.2143,
         3: 0.0715,
@@ -135,19 +135,19 @@ const trongsoTieuchi = {
         6: 0.1428,
         7: 0.1428
     },
-    5 : {
+    5: {
         1: 0.1875,
         2: 0.1875,
         3: 0.125,
         4: 0.125,
-        5: 0.625,
+        5: 0.0625,
         6: 0.125,
         7: 0.1875
     }
 }
 
 const trongsoThanhphan = {
-    1 : {
+    1: {
         1: 0.1905,
         2: 0.0476,
         3: 0.0952,
@@ -201,7 +201,7 @@ const trongsoThanhphan = {
         51: 0.1667,
         52: 0.0833
     },
-    2 : {
+    2: {
         1: 0.1905,
         2: 0.1429,
         3: 0.0952,
@@ -255,7 +255,7 @@ const trongsoThanhphan = {
         51: 0.1667,
         52: 0.0833
     },
-    3 : {
+    3: {
         1: 0.1667,
         2: 0.1667,
         3: 0.0417,
@@ -405,7 +405,7 @@ const trongsoThanhphan = {
         39: 0.0769,
         40: 0.0769,
         41: 0.25,
-        42: 0.833,
+        42: 0.0833,
         43: 0.25,
         44: 0.1667,
         45: 0.1667,
@@ -421,7 +421,7 @@ const trongsoThanhphan = {
 
 export const calculateTieuchiScore = (linhvuc, thanhphans) => {
     // console.log('thanhphans', thanhphans);
-    if(!linhvuc || !thanhphans) return null;
+    if (!linhvuc || !thanhphans) return null;
     let score = 0;
     thanhphans.forEach(tp => {
         let { id, diemthanhphan1 } = tp;
@@ -431,10 +431,10 @@ export const calculateTieuchiScore = (linhvuc, thanhphans) => {
 }
 
 export const calculateDetaiScore = (linhvuc, tieuchis) => {
-    if(!linhvuc || !tieuchis) return null;
+    if (!linhvuc || !tieuchis) return null;
     let score = 0;
     tieuchis.forEach(tc => {
-        let {id, diemtieuchi } = tc;
+        let { id, diemtieuchi } = tc;
         score += (trongsoTieuchi[linhvuc][id] * diemtieuchi);
     })
     return score;
@@ -451,12 +451,12 @@ export function flattenThanhphans(tieuchis) {
 
 export function checkIfDone(thanhphans) {
     return thanhphans.every(tp => {
-        let { cauhoi1, cauhoi2, pivot:{ result1, result2 }} = tp;
+        let { cauhoi1, cauhoi2, pivot: { result1, result2 } } = tp;
         let isOk = true;
-        if(cauhoi1 != null && (result1 == null || result1 === "")){
+        if (cauhoi1 != null && (result1 == null || result1 === "")) {
             isOk = false;
         }
-        if(cauhoi2 != null && (result2 == null || result2 === "")){
+        if (cauhoi2 != null && (result2 == null || result2 === "")) {
             isOk = false;
         }
         return isOk;
@@ -464,7 +464,7 @@ export function checkIfDone(thanhphans) {
 }
 
 export function getLinhVucName(id) {
-    switch(id) {
+    switch (id) {
         case 1:
             return 'Khoa học nông nghiệp';
         case 2:
@@ -475,44 +475,318 @@ export function getLinhVucName(id) {
             return 'Khoa học Y dược';
         case 5:
             return 'Kỹ thuật và Công nghệ';
-    }   
+    }
+}
+
+export function getTieuchiShortName(id) {
+    switch (id) {
+        case 1:
+            return 'Khoa học';
+        case 2:
+            return 'Công nghệ';
+        case 3:
+            return 'Kinh tế';
+        case 4:
+            return 'Môi trường';
+        case 5:
+            return 'Văn hóa, xã hội';
+        case 6:
+            return 'Thông tin quản lý';
+        case 7:
+            return 'Đào tạo';
+    }
 }
 
 export function getGrade(score) {
-    if(score >= 0 && score <= 20) {
+    if (score >= 0 && score <= 20) {
         return 'E';
     }
-    if(score > 20 && score <= 40) {
+    if (score > 20 && score <= 40) {
         return 'D';
     }
-    if(score > 40 && score <= 60) {
+    if (score > 40 && score <= 60) {
         return 'C';
     }
-    if(score > 60 && score <= 80) {
+    if (score > 60 && score <= 80) {
         return 'B';
     }
-    if(score > 80 && score <= 100) {
+    if (score > 80 && score <= 100) {
         return 'A';
-    }    
+    }
 }
 
 export function getFinalComment(score) {
-   let grade = getGrade(score);
-   switch(grade) {
-       case 'A':
-           return 'Có hiệu quả kinh tế - xã hội rất đáng kể';
-       case 'B':
-           return 'Có hiệu quả kinh tế - xã hội đáng kể';
-       case 'C':
-           return 'Có hiệu quả kinh tế - xã hội vừa phải';
-       case 'D': 
-           return 'Có hiệu quả kinh tế - xã hội thấp';
-       case 'E':
-           return 'Không có hiệu quả kinh tế - xã hội'; 
-   }
+    let grade = getGrade(score);
+    switch (grade) {
+        case 'A':
+            return 'Có hiệu quả kinh tế - xã hội rất đáng kể';
+        case 'B':
+            return 'Có hiệu quả kinh tế - xã hội đáng kể';
+        case 'C':
+            return 'Có hiệu quả kinh tế - xã hội vừa phải';
+        case 'D':
+            return 'Có hiệu quả kinh tế - xã hội thấp';
+        case 'E':
+            return 'Không có hiệu quả kinh tế - xã hội';
+    }
 }
 
 export function precise(x) {
     let result = Number.parseFloat(x).toFixed(2);
-    return result.split('.')[1] === "00" ? result.split('.')[0] : result; 
-  }
+    return result.split('.')[1] === "00" ? parseInt(result.split('.')[0]) : result;
+}
+
+
+export function getThanhphanOptions(mathanhphan) {
+    if (mathanhphan in thanhphanOptions) {
+        return thanhphanOptions[mathanhphan];
+    } else {
+        return ['Không có', 'Rất it', 'Ít', 'Vừa phải', 'Nhiều', 'Rất nhiều'];
+    }
+}
+
+const thanhphanOptions = {
+    H8: ['Không ảnh hưởng', 'Rất ít', 'Ít', 'Vừa phải', 'Nhiều', 'Rất nhiều'],
+    K1: ['Không tăng', 'Tăng rất ít', 'Tăng ít', 'Tăng vừa phải', 'Tăng nhiều', 'Tăng rất nhiều'],
+    K2: ['Không tăng', 'Tăng rất ít', 'Tăng ít', 'Tăng vừa phải', 'Tăng nhiều', 'Tăng rất nhiều'],
+    K3: ['Không tăng', 'Tăng rất ít', 'Tăng ít', 'Tăng vừa phải', 'Tăng nhiều', 'Tăng rất nhiều'],
+    K4: ['Không tăng', 'Tăng rất ít', 'Tăng ít', 'Tăng vừa phải', 'Tăng nhiều', 'Tăng rất nhiều'],
+    M1: ['Không giảm', 'Giảm rất ít', 'Giảm ít', 'Giảm vừa phải', 'Giảm nhiều', 'Giảm rất nhiều'],
+    M2: ['Không giảm', 'Giảm rất ít', 'Giảm ít', 'Giảm vừa phải', 'Giảm nhiều', 'Giảm rất nhiều']
+}
+
+export function getDetaiComments(detai) {
+    let { tieuchis } = detai;
+    let tieuchisComment = tieuchis.map(i => ({
+        title: i.title,
+        comment: getTieuchiComments(i)
+    }));
+    return tieuchisComment;
+}
+
+function getTieuchiComments(tieuchi) {
+    let { thanhphans } = tieuchi;
+    let tieuchiComment = '';
+    thanhphans.forEach(i => {
+        let { loaithanhphan } = i;
+        switch (loaithanhphan) {
+            case 1:
+                tieuchiComment += handleLoaithanhphan1(i);
+                break;
+            case 2:
+                tieuchiComment += handleLoaithanhphan2(i);
+                break;
+            case 3:
+                tieuchiComment += handleLoaithanhphan3(i);
+                break;
+        }
+    })
+    tieuchiComment = tieuchiComment.charAt(0).toUpperCase() + tieuchiComment.slice(1);
+    tieuchiComment = tieuchiComment.slice(0, -2) + '.';
+    return tieuchiComment;
+}
+
+function handleLoaithanhphan1(thanhphan) {
+    let { pivot, subinfos, danhgia } = thanhphan;
+    let { diemthanhphan1, additional1 } = pivot;
+    let thanhphanComment = '';
+    if (diemthanhphan1 > 0) {
+        if (subinfos.length > 0) {
+            thanhphanComment += subinfos[additional1].danhgia
+            thanhphanComment += ', ';
+        } else {
+            thanhphanComment += danhgia;
+            thanhphanComment += ', ';
+        }
+    }
+    return thanhphanComment;
+}
+
+function handleLoaithanhphan2(thanhphan) {
+    let { pivot, subinfos, prefixdanhgia, danhgia } = thanhphan;
+    let { diemthanhphan1, result1, result2, additional1, additional2, additional3, additional4, additional5, additional6, additional7, additional8 } = pivot;
+    let thanhphanComment = '';
+    let finalMainResult = 0;
+    if (result1) {
+        finalMainResult += result1;
+    }
+    if (result2) {
+        finalMainResult += result2;
+    }
+    if (finalMainResult > 0) {
+        if (subinfos.length > 0) {
+            let finalSubValues = [0, 0, 0, 0]
+            if (additional1 != null && additional1 > 0) {
+                finalSubValues[0] += additional1;
+            }
+            if (additional2 != null && additional2 > 0) {
+                finalSubValues[1] += additional2;
+            }
+            if (additional3 != null && additional3 > 0) {
+                finalSubValues[2] += additional3;
+            }
+            if (additional4 != null && additional4 > 0) {
+                finalSubValues[3] += additional4;
+            }
+            if (additional5 != null && additional5 > 0) {
+                finalSubValues[0] += additional5;
+            }
+            if (additional6 != null && additional6 > 0) {
+                finalSubValues[1] += additional6;
+            }
+            if (additional7 != null && additional7 > 0) {
+                finalSubValues[2] += additional7;
+            }
+            if (additional8 != null && additional8 > 0) {
+                finalSubValues[3] += additional8;
+            }
+            finalSubValues.forEach((item, index) => {
+                if (item > 0) {
+                    if (subinfos[index].prefixdanhgia) {
+                        thanhphanComment += subinfos[index].prefixdanhgia;
+                        thanhphanComment += ' ';
+                        thanhphanComment += item.toString();
+                        thanhphanComment += ' ';
+                        thanhphanComment += subinfos[index].danhgia;
+                        thanhphanComment += ', ';
+                    } else {
+                        thanhphanComment += item.toString();
+                        thanhphanComment += ' ';
+                        thanhphanComment += subinfos[index].danhgia;
+                        thanhphanComment += ', ';
+                    }
+                }
+            })
+        } else {
+            if (prefixdanhgia) {
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += finalMainResult.toString();
+                thanhphanComment += ' ';
+                thanhphanComment += danhgia;
+                thanhphanComment += ', ';
+            } else {
+                thanhphanComment += finalMainResult.toString();
+                thanhphanComment += ' ';
+                thanhphanComment += danhgia;
+                thanhphanComment += ', ';
+            }
+        }
+    }
+    return thanhphanComment;
+}
+
+function handleLoaithanhphan3(thanhphan) {
+    let { pivot, prefixdanhgia, danhgia, mathanhphan } = thanhphan;
+    let { diemthanhphan1, result1, result2 } = pivot;
+    let thanhphanComment = '';
+    let s;
+    if(danhgia != null) {
+        switch(diemthanhphan1) {
+            // case 0:
+            //     s = getThanhphanOptions(mathanhphan)[0];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += danhgia;
+            //     thanhphanComment += ', ';
+            //     break;
+            // case 20:
+            //     s = getThanhphanOptions(mathanhphan)[1];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += danhgia;
+            //     thanhphanComment += ', ';
+            //     break;
+            // case 40:
+            //     s = getThanhphanOptions(mathanhphan)[2];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += danhgia;
+            //     thanhphanComment += ', ';
+            //     break;
+            case 60:
+                s = getThanhphanOptions(mathanhphan)[3];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ' ';
+                thanhphanComment += danhgia;
+                thanhphanComment += ', ';
+                break;
+            case 80:
+                s = getThanhphanOptions(mathanhphan)[4];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ' ';
+                thanhphanComment += danhgia;
+                thanhphanComment += ', ';
+                break;
+            case 100:
+                s = getThanhphanOptions(mathanhphan)[5];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ' ';
+                thanhphanComment += danhgia;
+                thanhphanComment += ', ';
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch(diemthanhphan1) {
+            // case 0:
+            //     s = getThanhphanOptions(mathanhphan)[0];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ', ';
+            //     break;
+            // case 20:
+            //     s = getThanhphanOptions(mathanhphan)[1];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ', ';
+            //     break;
+            // case 40:
+            //     s = getThanhphanOptions(mathanhphan)[2];
+            //     thanhphanComment += prefixdanhgia;
+            //     thanhphanComment += ' ';
+            //     thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+            //     thanhphanComment += ', ';
+            //     break;
+            case 60:
+                s = getThanhphanOptions(mathanhphan)[3];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ', ';
+                break;
+            case 80:
+                s = getThanhphanOptions(mathanhphan)[4];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ', ';
+                break;
+            case 100:
+                s = getThanhphanOptions(mathanhphan)[5];
+                thanhphanComment += prefixdanhgia;
+                thanhphanComment += ' ';
+                thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
+                thanhphanComment += ', ';
+                break;
+            default:
+                break;
+        }
+    }
+    return thanhphanComment;
+}

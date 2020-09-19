@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { message, Button, Table, Tag, Popconfirm, Row, Col } from 'antd';
-import { getLinhVucName, getGrade, getFinalComment, precise } from '../Utils.js';
+import { message, Button, Table, Tag, Popconfirm, Row, Col, Typography } from 'antd';
+import { getLinhVucName, getGrade, getFinalComment, precise, getTieuchiShortName, getDetaiComments } from '../Utils.js';
+import ResultChart from './Chart.js';
 import {
     useParams,
     useHistory
-  } from "react-router-dom";
+} from "react-router-dom";
 import { LeftOutlined } from '@ant-design/icons';
+
+const styles = {
+    backButton: {
+        marginBottom: '5px'
+    }
+}
+
+const { Text } = Typography;
+
 const columns = [
     {
         title: 'Lĩnh vực đề tài',
@@ -21,8 +31,13 @@ const columns = [
     },
     {
         title: 'Kết quả thực hiện, triển khai và tác động',
-        dataIndex: 'result',
-        width: '25%'
+        dataIndex: 'comments',
+        width: '25%',
+        render: comments => {
+            return (
+            comments.map(i => <div><Text strong>{`- ${i.title}: `}</Text>{i.comment}</div>)
+            )
+        }
     },
     {
         title: 'Hiệu quả về khoa học',
@@ -30,10 +45,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -43,10 +58,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -56,10 +71,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -69,10 +84,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -82,10 +97,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -95,10 +110,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -108,10 +123,10 @@ const columns = [
         width: '7%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center' }}>{getGrade(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getGrade(i)}</div>
+                </React.Fragment>
             )
         }
     },
@@ -121,11 +136,11 @@ const columns = [
         width: '9%',
         render: i => {
             return (
-            <React.Fragment>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{precise(i)}</div>
-            <div style={{ textAlign:'center', marginBottom: '10px' }}>{getGrade(i)}</div>
-            <div style={{ textAlign:'center' }}>{getFinalComment(i)}</div>
-            </React.Fragment>
+                <React.Fragment>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{precise(i)}</div>
+                    <div style={{ textAlign: 'center', marginBottom: '10px' }}>{getGrade(i)}</div>
+                    <div style={{ textAlign: 'center' }}>{getFinalComment(i)}</div>
+                </React.Fragment>
             )
         }
     }
@@ -134,6 +149,8 @@ const columns = [
 const ResultTable = () => {
     const [dataSource, setDataSource] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [chartData, setChartData] = useState(null);
+    const [isChartShown, setIsChartShown] = useState(false);
     let { id } = useParams();
     let history = useHistory();
 
@@ -148,10 +165,11 @@ const ResultTable = () => {
         }).then((result) => {
             let { detai } = result;
             let { tieuchis } = detai;
-            console.log(detai);
+            console.log('getDetaiComments', getDetaiComments(detai));
             let dataSource = {
                 linhvuc: getLinhVucName(detai.linhvuc),
                 tendetai: detai.tendetai,
+                comments: getDetaiComments(detai),
                 diemkhoahoc: tieuchis.find(i => i.id == 1).pivot.diemtieuchi,
                 diemcongnghe: tieuchis.find(i => i.id == 2).pivot.diemtieuchi,
                 diemkinhte: tieuchis.find(i => i.id == 3).pivot.diemtieuchi,
@@ -161,8 +179,10 @@ const ResultTable = () => {
                 diemdaotao: tieuchis.find(i => i.id == 7).pivot.diemtieuchi,
                 danhgiachung: detai.diemdetai
             }
+            let chartData = [...tieuchis.map(i => ({ name: getTieuchiShortName(i.id), score: precise(i.pivot.diemtieuchi) })), { name: 'Đánh giá chung', score: precise(detai.diemdetai) }]
             console.log('dataSource', dataSource);
             setDataSource([dataSource]);
+            setChartData(chartData);
             setIsLoading(false);
         }, (error) => {
             if (error.status == 401) {
@@ -179,11 +199,25 @@ const ResultTable = () => {
         history.goBack();
     }
 
+    const toggleChart = () => {
+        setIsChartShown(!isChartShown);
+    }
+
     return (
-    <React.Fragment>
-    <Button type="primary" icon={<LeftOutlined />} onClick={handleGoBack} />
-        <Table columns={columns} dataSource={dataSource} loading={isLoading} />    
-    </React.Fragment>
+        <React.Fragment>
+            <Button type="primary" icon={<LeftOutlined />} onClick={handleGoBack} style={styles.backButton} />
+            <Table
+                columns={columns}
+                dataSource={dataSource}
+                loading={isLoading}
+                bordered
+                pagination={false}
+            />
+            <Row style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+                <Button type="primary" onClick={toggleChart}>{isChartShown ? 'Đóng đồ thị' : 'Xem đồ thị'}</Button>
+            </Row>
+            {isChartShown && <ResultChart chartData={chartData} />}
+        </React.Fragment>
     )
 }
 

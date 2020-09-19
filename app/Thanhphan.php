@@ -11,4 +11,8 @@ class Thanhphan extends Model
     public function detaitieuchis() {
         return $this->belongsToMany('App\DetaiTieuchi', 'detai_tieuchi_thanhphan', 'thanhphanid', 'detaitieuchiid');
     }
+
+    public function subinfos() {
+        return $this->hasMany('App\SubInfo', 'thanhphanid');
+    }
 }

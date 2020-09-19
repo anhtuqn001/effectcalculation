@@ -26,6 +26,8 @@
     },
     "dependencies": {
         "antd": "^4.6.2",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "recharts": "^1.8.5",
+        "viser-react": "^2.4.8"
     }
 }
