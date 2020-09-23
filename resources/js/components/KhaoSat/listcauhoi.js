@@ -21,7 +21,7 @@ const styles = {
     }
 }
 
-const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, handleOnNext, donvi, handleDonviChange, id, tendetai, updateDetai, haveResult, isLoading }) => {
+const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, handleOnNext, donvi, handleDonviChange, id, tendetai, updateDetai, haveResult, isLoading, linhvuc }) => {
     const [thanhphans, setThanhphans] = useState([]);
     const [isDone, setIsDone] = useState(false);
     let history = useHistory();
@@ -109,7 +109,7 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
             }
         }
         setThanhphans([...thanhphans]);
-        // console.log('thanhphans', thanhphans);
+        console.log('thanhphans', thanhphans);
     }
 
     const test = () => {
@@ -123,8 +123,8 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
 
     const handleSubmit = () => {
         setIsSubmitting(true);
-        let formattedTieuchis = tieuchis.map(tieuchi => formatTieuchi(tieuchi));
-        let diemdetai = calculateDetaiScore(1, formattedTieuchis);
+        let formattedTieuchis = tieuchis.map(tieuchi => formatTieuchi(tieuchi, linhvuc));
+        let diemdetai = calculateDetaiScore(linhvuc, formattedTieuchis);
         let data = {
             detaiId: id,
             diemdetai,
@@ -157,10 +157,10 @@ const ListCauHoi = ({ tieuchis, tieuchi, tieuchisLength, current, next, prev, ha
         })
     }
 
-    const formatTieuchi = (tieuchi) => {
+    const formatTieuchi = (tieuchi, linhvuc) => {
         let { id, thanhphans } = tieuchi
         let formattedThanhphans = thanhphans.map(thanhphan => formatThanhphan(thanhphan));
-        let diemtieuchi = calculateTieuchiScore(1, formattedThanhphans);
+        let diemtieuchi = calculateTieuchiScore(linhvuc, formattedThanhphans);
         return {
             id,
             diemtieuchi,
@@ -388,12 +388,12 @@ const CauhoiItem = ({ donvi, thanhphan, handleOnAnswer, handleOnSubAnswer, reset
                 {hasHint ?
                     <React.Fragment>
                         <div style={{ marginRight: '10px' }}>
-                            {thanhphan.mathanhphan + '. ' + cauhoi}
+                            {cauhoi}
                         </div>
                         <Tooltip title={thanhphan.chuthich} placement="right">
                             <QuestionCircleFilled />
                         </Tooltip>
-                    </React.Fragment> : thanhphan.mathanhphan + '. ' + cauhoi
+                    </React.Fragment> : cauhoi
                 }
             </Row>
             <Row style={{ marginTop: 10 }}>

@@ -5,6 +5,8 @@ import DetaiList from './DetaiList';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import CustomHeader from './Header.js'
 import ResultTable from './ResultTable';
+import ExpenseTable from './ExpenseTable';
+import CountedDetaisTable from './CountedDetaisTable';
 import {
     BrowserRouter as Router,
     Switch,
@@ -29,10 +31,16 @@ function App() {
                         <Route path="/ketqua/:id">
                             <ResultTable />
                         </Route>
+                        <Route path="/expensetable">
+                            <ExpenseTable />
+                        </Route>
+                        <Route path="/counteddetaistable">
+                            <CountedDetaisTable />
+                        </Route>
                     </Switch>
                 </Content>
             </Router>
-            <Footer style={{ textAlign: 'center' }}>Bản quyền Lihanet - 2020</Footer>
+            <Footer style={{ textAlign: 'center' }}>Phần mềm là sản phẩm của đề tài cấp tỉnh mã số: 12-05-2018. Bản quyền thuộc về Trung tâm Thông tin - Ứng dụng Khoa học và Công nghệ, Sở Khoa học và Công nghệ tỉnh Bình Định</Footer>
         </Layout>
     );
 }

@@ -4,12 +4,19 @@ import 'antd/dist/antd.css';
 import { message, Button, Table, Tag, Modal, Form, Input, Select } from 'antd';
 
 const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
+    const [madetai, setMadetai] = useState('');
     const [tendetai, setTendetai] = useState('');
     const [tenchunhiem, setTenchunhiem] = useState('');
     const [cqchutri, setCqchutri] = useState('');
     const [cqtrienkhai, setCqtrienkhai] = useState('');
+    const [kinhphichutri, setKinhphichutri] = useState(0);
+    const [kinhphitrienkhai, setKinhphitrienkhai] = useState(0);
     const [linhvuc, setLinhvuc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    const handleMadetaiChange = (e) => {
+        setMadetai(e.target.value);
+    }
 
     const handleTendetaiChange = (e) => {
         setTendetai(e.target.value);
@@ -31,13 +38,24 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
         setLinhvuc(val);
     }
 
+    const handleKinhphichutriChange = (e) => {
+        setKinhphichutri(e.target.value);
+    }
+
+    const handleKinhphitrienkhaiChange = (e) => {
+        setKinhphitrienkhai(e.target.value);
+    }
+
     const handleSubmit = () => {
         setIsLoading(true);
         let data = {
+            madetai,
             tendetai,
             tenchunhiem,
             cqchutri,
             cqtrienkhai,
+            kinhphichutri,
+            kinhphitrienkhai,
             linhvuc,
         }
         console.log(data);
@@ -80,7 +98,7 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
                     type="primary"
                     loading={isLoading}
                     onClick={handleSubmit}
-                    style={{background: '#389e0d', borderColor:'#389e0d'}}
+                    style={{ background: '#389e0d', borderColor: '#389e0d' }}
                 >
                     Tạo
                 </Button>,
@@ -98,6 +116,20 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
                 wrapperCol={{ span: 17 }}
                 name="basic"
             >
+                <Form.Item
+                    label="Mã đề tài"
+                    name="madetai"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Mã đề tài không được để trống',
+                        },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleMadetaiChange}
+                >
+                    <Input />
+                </Form.Item>
                 <Form.Item
                     label="Tên đề tài"
                     name="tendetai"
@@ -151,6 +183,34 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
                     // ]}
                     // style={{ marginBottom: '5px' }}
                     onChange={handleCqtrienkhaiChange}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Kinh phí chủ trì"
+                    name="kinhphichutri"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Kinh phí chủ trì không được để trống',
+                        },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleKinhphichutriChange}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Kinh phí triển khai"
+                    name="kinhphitrienkhai"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Kinh phí triển khai không được để trống',
+                        },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleKinhphitrienkhaiChange}
                 >
                     <Input />
                 </Form.Item>

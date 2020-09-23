@@ -4,10 +4,18 @@ export const calculateThanhphanScore = (thanhphan) => {
     if (result1 == null && result2 == null) return null;
     if (loaithanhphan == 1) {
         let result = result1 || result2;
-        if (result == 0) {
-            score = 0;
-        } else if (result == 1) {
-            score = 100;
+        if (mathanhphan == "M3") {
+            if (result == 0) {
+                score = 0;
+            } else if (result == 1) {
+                score = 20;
+            }
+        } else {
+            if (result == 0) {
+                score = 0;
+            } else if (result == 1) {
+                score = 100;
+            }
         }
     }
     if (loaithanhphan == 3) {
@@ -70,22 +78,28 @@ const loaithanhphan2 = {
         '1': 50
     },
     C6: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     },
     D2: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     },
     D3: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     },
     D4: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     },
     D5: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     },
     D6: {
-        highestScore: 1
+        highestScore: 2,
+        '1': 50
     }
 }
 
@@ -339,7 +353,7 @@ const trongsoThanhphan = {
         27: 0.0714,
         28: 0.1429,
         29: 0.1429,
-        30: 0.714,
+        30: 0.0714,
         31: 0.2143,
         32: 0.1429,
         33: 0.1429,
@@ -567,13 +581,24 @@ export function getDetaiComments(detai) {
 function getTieuchiComments(tieuchi) {
     let { thanhphans } = tieuchi;
     let tieuchiComment = '';
+    let added1 = false;
+    let added2 = false;
     thanhphans.forEach(i => {
-        let { loaithanhphan } = i;
+        let { loaithanhphan, mathanhphan, pivot } = i;
+        let { diemthanhphan1 } = pivot;
         switch (loaithanhphan) {
             case 1:
                 tieuchiComment += handleLoaithanhphan1(i);
                 break;
             case 2:
+                if (['D2', 'D3', 'D4'].includes(mathanhphan) && !added1 && diemthanhphan1 > 0) {
+                    tieuchiComment += "góp phần hỗ trợ đào tạo ";
+                    added1 = true;
+                }
+                if (['D5', 'D6'].includes(mathanhphan) && !added2 && diemthanhphan1 > 0) {
+                    tieuchiComment += "bồi dưỡng/đào tạo ";
+                    added2 = true;
+                }
                 tieuchiComment += handleLoaithanhphan2(i);
                 break;
             case 3:
@@ -588,22 +613,22 @@ function getTieuchiComments(tieuchi) {
 
 function handleLoaithanhphan1(thanhphan) {
     let { pivot, subinfos, danhgia } = thanhphan;
-    let { diemthanhphan1, additional1 } = pivot;
+    let { diemthanhphan1, additional1, additional5 } = pivot;
     let thanhphanComment = '';
     if (diemthanhphan1 > 0) {
         if (subinfos.length > 0) {
-            thanhphanComment += subinfos[additional1].danhgia
-            thanhphanComment += ', ';
+            thanhphanComment += subinfos[additional1 || additional5].danhgia;
+            thanhphanComment += '; ';
         } else {
             thanhphanComment += danhgia;
-            thanhphanComment += ', ';
+            thanhphanComment += '; ';
         }
     }
     return thanhphanComment;
 }
 
 function handleLoaithanhphan2(thanhphan) {
-    let { pivot, subinfos, prefixdanhgia, danhgia } = thanhphan;
+    let { pivot, subinfos, prefixdanhgia, danhgia, mathanhphan } = thanhphan;
     let { diemthanhphan1, result1, result2, additional1, additional2, additional3, additional4, additional5, additional6, additional7, additional8 } = pivot;
     let thanhphanComment = '';
     let finalMainResult = 0;
@@ -654,7 +679,10 @@ function handleLoaithanhphan2(thanhphan) {
                         thanhphanComment += ' ';
                         thanhphanComment += subinfos[index].danhgia;
                         thanhphanComment += ', ';
-                    }
+                    }   
+                }
+                if(index == finalSubValues.length - 1 && !['D2', 'D3', 'D4'].includes(mathanhphan)) {
+                    thanhphanComment = thanhphanComment.slice(0, -2) + '; ';
                 }
             })
         } else {
@@ -664,12 +692,16 @@ function handleLoaithanhphan2(thanhphan) {
                 thanhphanComment += finalMainResult.toString();
                 thanhphanComment += ' ';
                 thanhphanComment += danhgia;
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
             } else {
                 thanhphanComment += finalMainResult.toString();
                 thanhphanComment += ' ';
                 thanhphanComment += danhgia;
-                thanhphanComment += ', ';
+                if(['D5', 'D6'].includes(mathanhphan)) {
+                    thanhphanComment += ', ';
+                } else {
+                    thanhphanComment += '; ';
+                }
             }
         }
     }
@@ -681,8 +713,8 @@ function handleLoaithanhphan3(thanhphan) {
     let { diemthanhphan1, result1, result2 } = pivot;
     let thanhphanComment = '';
     let s;
-    if(danhgia != null) {
-        switch(diemthanhphan1) {
+    if (danhgia != null) {
+        switch (diemthanhphan1) {
             // case 0:
             //     s = getThanhphanOptions(mathanhphan)[0];
             //     thanhphanComment += prefixdanhgia;
@@ -717,7 +749,7 @@ function handleLoaithanhphan3(thanhphan) {
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
                 thanhphanComment += ' ';
                 thanhphanComment += danhgia;
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             case 80:
                 s = getThanhphanOptions(mathanhphan)[4];
@@ -726,7 +758,7 @@ function handleLoaithanhphan3(thanhphan) {
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
                 thanhphanComment += ' ';
                 thanhphanComment += danhgia;
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             case 100:
                 s = getThanhphanOptions(mathanhphan)[5];
@@ -735,13 +767,13 @@ function handleLoaithanhphan3(thanhphan) {
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
                 thanhphanComment += ' ';
                 thanhphanComment += danhgia;
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             default:
                 break;
         }
     } else {
-        switch(diemthanhphan1) {
+        switch (diemthanhphan1) {
             // case 0:
             //     s = getThanhphanOptions(mathanhphan)[0];
             //     thanhphanComment += prefixdanhgia;
@@ -768,25 +800,118 @@ function handleLoaithanhphan3(thanhphan) {
                 thanhphanComment += prefixdanhgia;
                 thanhphanComment += ' ';
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             case 80:
                 s = getThanhphanOptions(mathanhphan)[4];
                 thanhphanComment += prefixdanhgia;
                 thanhphanComment += ' ';
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             case 100:
                 s = getThanhphanOptions(mathanhphan)[5];
                 thanhphanComment += prefixdanhgia;
                 thanhphanComment += ' ';
                 thanhphanComment += s.charAt(0).toLowerCase() + s.slice(1);
-                thanhphanComment += ', ';
+                thanhphanComment += '; ';
                 break;
             default:
                 break;
         }
     }
     return thanhphanComment;
+}
+
+export function handleExpenseTableData(data, summedValueAccordingToLinhvuc) {
+    if(data == null) return null;
+    let gradeKeysArr = Object.keys(data);
+    let handledData = [];
+    gradeKeysArr.forEach(i => {
+        let item = {};
+        item.grade = i;
+        let linhvucKeysArr = Object.keys(data[i]);
+        linhvucKeysArr.forEach(j => {
+            let sumExpense = 0;
+            data[i][j].forEach(k => {
+                sumExpense += k.tongkinhphi
+            })
+            sumExpense = parseFloat(sumExpense.toFixed(5));
+            item['sotien' + j] = sumExpense;
+            item['tyle' + j] = sumExpense / summedValueAccordingToLinhvuc[j];
+        })
+        handledData.push(item);
+    });
+    return handledData;
+}
+
+export function handleSummedExpenseTableData(data) {
+    if(data == null) return null;
+    let dataKeysArr = Object.keys(data);
+    let item = {};
+    item.grade = "Tổng";
+    dataKeysArr.forEach(i => {
+        let summedValue = 0;
+        data[i].forEach(j => {
+            let { tongkinhphi } = j;
+            summedValue += tongkinhphi;
+        })
+       item['sotien' + i] = summedValue;
+       item['tyle' + i] = '100%' 
+    })
+    return item;
+}
+
+export function getSummedValueAccordingToLinhvucExpenseTable(data) {
+    if(data == null) return null;
+    let dataKeysArr = Object.keys(data);
+    let handledData = {};
+    dataKeysArr.forEach(key => {
+        handledData[key] = 0;
+        data[key].forEach(i => {
+            let { tongkinhphi } = i;
+            handledData[key] += tongkinhphi;   
+        })
+    })
+    return handledData;
+}
+
+
+export function handleCountedDetaiTableData(data, summedValueAccordingToLinhvuc) {
+    if(data == null) return null;
+    let gradeKeysArr = Object.keys(data);
+    let handledData = [];
+    gradeKeysArr.forEach(i => {
+        let item = {};
+        item.grade = i;
+        let linhvucKeysArr = Object.keys(data[i]);
+        linhvucKeysArr.forEach(j => {
+            item['soluong' + j] = data[i][j].length;
+            item['tyle' + j] = item['soluong' + j] / summedValueAccordingToLinhvuc[j];
+        })
+        handledData.push(item);
+    });
+    return handledData;
+}
+
+export function getSummedValueAccordingToLinhvucCountedDetaisTable(data) {
+    if(data == null) return null;
+    let dataKeysArr = Object.keys(data);
+    let handledData = {};
+    dataKeysArr.forEach(key => {
+        handledData[key] = data[key].length;
+    })
+    return handledData;
+}
+
+export function handleSummedECountedDetaisTableData(data) {
+    if(data == null) return null;
+    let dataKeysArr = Object.keys(data);
+    let item = {};
+    item.grade = "Tổng";
+    dataKeysArr.forEach(i => {
+       item['soluong' + i] = data[i];
+       item['tyle' + i] = '100%'; 
+    })
+    return item;
 }

@@ -103,7 +103,7 @@ const KhaoSat = () => {
                     <Step key={item.id} title={item.title} description={item.tentieuchi} />
                 ))}
             </Steps>
-            <ListCauHoi donvi={donvi} tendetai={detai.tendetai} haveResult={!!detai.diemdetai} tieuchis={detai.tieuchis} tieuchi={!!detai.tieuchis ? (donvi == 1 ? detai.tieuchis[current1] : detai.tieuchis[current2]) : {}} tieuchisLength={!!detai.tieuchis && detai.tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange} id={detai.id} updateDetai={updateDetai} isLoading={isLoading}/>
+            <ListCauHoi donvi={donvi} tendetai={detai.tendetai} haveResult={!!detai.diemdetai} tieuchis={detai.tieuchis} tieuchi={!!detai.tieuchis ? (donvi == 1 ? detai.tieuchis[current1] : detai.tieuchis[current2]) : {}} tieuchisLength={!!detai.tieuchis && detai.tieuchis.length} current={donvi == 1 ? current1 : current2} next={next} prev={prev} handleDonviChange={handleDonviChange} id={detai.id} updateDetai={updateDetai} isLoading={isLoading} linhvuc={detai.linhvuc}/>
         </React.Fragment>
     )
     } else {

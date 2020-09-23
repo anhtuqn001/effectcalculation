@@ -35,8 +35,16 @@ const columns = [
         width: '25%',
         render: comments => {
             return (
-            comments.map(i => <div><Text strong>{`- ${i.title}: `}</Text>{i.comment}</div>)
+                comments && comments.map(i => {
+                    if(i.comment.length > 3) {
+                    return <div><Text strong>{`- ${i.title}: `}</Text>{i.comment}</div>;
+                    }
+                    return <div></div>
+                })
             )
+            // return (
+            //     comments && comments.map(i => <div><Text strong>{`- ${i.title}: `}</Text>{i.comment}</div>)
+            // );
         }
     },
     {
@@ -165,7 +173,8 @@ const ResultTable = () => {
         }).then((result) => {
             let { detai } = result;
             let { tieuchis } = detai;
-            console.log('getDetaiComments', getDetaiComments(detai));
+            console.log('detai', detai);
+            // console.log('getDetaiComments', getDetaiComments(detai));
             let dataSource = {
                 linhvuc: getLinhVucName(detai.linhvuc),
                 tendetai: detai.tendetai,

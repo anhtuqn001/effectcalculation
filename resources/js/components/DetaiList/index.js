@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { message, Button, Table, Tag, Popconfirm, Row, Col, Select, Form } from 'antd';
+import { message, Button, Table, Tag, Popconfirm, Row, Col, Select, Form, Breadcrumb } from 'antd';
 import CreateModal from './CreateModal.js';
 import EditModal from './EditModal.js';
 import {
@@ -155,9 +155,16 @@ const DeTaiList = () => {
 
     const handleLinhVucChange = (val) => {
         setSelectingLinhvuc(val);
+        console.log(val);
     }
 
     const columns = [
+        {
+            title: 'Mã',
+            dataIndex: 'madetai',
+            key: 'madetai',
+            width: '6%'
+        },
         {
             title: 'Tên đề tài',
             dataIndex: 'tendetai',
@@ -174,13 +181,13 @@ const DeTaiList = () => {
             title: 'Cơ quan chủ trì',
             dataIndex: 'cqchutri',
             key: 'cqchutri',
-            width: '13%'
+            width: '10%'
         },
         {
             title: 'Cơ quan triển khai',
             dataIndex: 'cqtrienkhai',
             key: 'cqtrienkhai',
-            width: '13%'
+            width: '10%'
         },
         {
             title: 'Lĩnh vực',
@@ -291,16 +298,27 @@ const DeTaiList = () => {
         }
     }
 
-
     const rowSelection = {
         fixed: true,
         onChange: handleRowSelection
     }
 
+    const getDetaiName = (madetai) => {
+       let detai = currentDetais.find(i => i.madetai == madetai);
+       if(detai != null) {
+           return detai.tendetai;
+       }
+       return null;
+    }
+
     return (
         <React.Fragment>
             <Row style={{ marginTop: '5px', marginBottom: '5px' }} gutter={12}>
-                <Col span={6} offset={12}>
+                <Col span={6}>
+                    <Link to="/expensetable" style={{marginRight:'10px'}}><Button>Kinh phí</Button></Link>
+                    <Link to="/counteddetaistable"><Button>Lượng đề tài</Button></Link>
+                </Col>
+                <Col span={6} offset={6}>
                     <Form.Item label="Lĩnh vực">
                         <Select defaultValue={0} onChange={handleLinhVucChange}>
                             <Option value={0}>Tất cả</Option>
@@ -322,7 +340,7 @@ const DeTaiList = () => {
             <CreateModal isOpen={isCreateModalOpen} hide={hideCreateModal} appendNewDetai={appendNewDetai} />
             <EditModal isOpen={isEditModalOpen} hide={hideEditModal} editDetai={editDetai} changeEditedDetai={changeEditedDetai} />
             <Table rowSelection={rowSelection} dataSource={selectingLinhvuc == 0 ? detais : detais.filter(i => i.linhvuc == selectingLinhvuc)} columns={columns} loading={isLoading} />
-            <ChartContainer isShown={isChartShown} hide={hideChart} currentDetais={currentDetais} />
+            <ChartContainer isShown={isChartShown} hide={hideChart} currentDetais={currentDetais} getDetaiName={getDetaiName}/>
         </React.Fragment>
     )
 }

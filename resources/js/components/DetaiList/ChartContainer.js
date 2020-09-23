@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Button, Row, Typography, Col, Form, Select } from 'antd';
 import {
-    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Legend, Tooltip,
 } from 'recharts';
 import { precise } from '../Utils.js';
 
@@ -31,7 +31,7 @@ const data = [
 
 const { Text } = Typography;
 
-const ChartContainer = ({ isShown, hide, currentDetais }) => {
+const ChartContainer = ({ isShown, hide, currentDetais, getDetaiName }) => {
     const [dataChart, setDataChart] = useState([]);
     const [currentTieuchi, setCurrentTieuchi] = useState(0);
 
@@ -41,7 +41,7 @@ const ChartContainer = ({ isShown, hide, currentDetais }) => {
 
     useEffect(() => {
         if (currentDetais !== null && currentDetais.length > 0) {
-            let dataChart = currentDetais.map(detai => ({ name: detai.tendetai, score: currentTieuchi == 0 ? precise(detai.diemdetai) : getDiemTieuChi(detai, currentTieuchi) }));
+            let dataChart = currentDetais.map(detai => ({ name: detai.madetai, score: currentTieuchi == 0 ? precise(detai.diemdetai) : getDiemTieuChi(detai, currentTieuchi) }));
             setDataChart([...dataChart]);
             console.log('dataChart', dataChart);
         }
@@ -61,7 +61,7 @@ const ChartContainer = ({ isShown, hide, currentDetais }) => {
 
     useEffect(() => {
         if (currentDetais !== null && currentDetais.length > 0) {
-            let dataChart = currentDetais.map(detai => ({ name: detai.tendetai, score: currentTieuchi == 0 ? precise(detai.diemdetai) : getDiemTieuChi(detai, currentTieuchi) }));
+            let dataChart = currentDetais.map(detai => ({ name: detai.madetai, score: currentTieuchi == 0 ? precise(detai.diemdetai) : getDiemTieuChi(detai, currentTieuchi) }));
             setDataChart([...dataChart]);
             console.log(dataChart);
         }
@@ -78,9 +78,10 @@ const ChartContainer = ({ isShown, hide, currentDetais }) => {
                 height={650}
             >
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                    <BarChart width={1200} height={500} data={dataChart} barSize={100} margin={{top: 15}}>
+                    <BarChart width={1200} height={500} data={dataChart} barSize={100} margin={{ top: 15 }}>
                         <XAxis dataKey="name" />
                         <YAxis />
+                        <Tooltip content={<CustomTooltip getDetaiName={getDetaiName}/>} wrapperStyle={{ width: 300, backgroundColor: '#ccc' }}/>
                         <Bar
                             dataKey="score"
                             label={{ position: 'top' }}
@@ -126,6 +127,24 @@ const TitleComponent = ({ handleTieuchiChange }) => {
         </React.Fragment>
     )
 }
+
+const CustomTooltip = ({ payload, label, active, getDetaiName }) => {
+
+    useEffect(() => {
+        console.log('payload');
+    }, [payload])
+    if (active) {
+        return (
+            <div className="custom-tooltip">
+                {/* <p className="label">{`${label} : ${payload[0].value}`}</p> */}
+                <p>{getDetaiName(label)}</p>
+            </div>
+        );
+    }
+
+    return null;
+}
+
 
 
 export default ChartContainer;

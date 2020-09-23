@@ -24,3 +24,6 @@ Route::put('detai', 'DetaiController@update');
 Route::delete('detai/{id}', 'DetaiController@remove');
 Route::get('getdetai/{id}', 'DetaiController@getDetai');
 Route::post('updatescores', 'DetaiController@updateScores');
+
+Route::get('getdetaiexpenses', 'DetaiController@getDetaiExpenses');
+Route::get('getcounteddetais', 'DetaiController@getCountedDetais');

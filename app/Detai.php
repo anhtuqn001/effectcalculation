@@ -27,4 +27,23 @@ class Detai extends Model
             $detai->tieuchis()->detach();
         });
     }
+
+    public function getGrade() {
+        if($this->diemdetai >= 0 && $this->diemdetai <= 20) {
+            return 'E';
+        } else if($this->diemdetai > 20 && $this->diemdetai <= 40) {
+            return 'D';
+        } else if($this->diemdetai > 40 && $this->diemdetai <= 60) {
+            return 'C';
+        } else if($this->diemdetai > 60 && $this->diemdetai <= 80) {
+            return 'B';
+        } else if($this->diemdetai > 80 && $this->diemdetai <= 100) {
+            return 'A';
+        }
+    }
+
+    public function getTotalExpense() {
+        // return (float)$this->kinhphichutri + $this->kinhphitrienkhai; 
+        return round($this->kinhphichutri + $this->kinhphitrienkhai, 4);
+    }
 }

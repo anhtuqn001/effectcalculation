@@ -6,31 +6,44 @@ import { message, Button, Table, Tag, Modal, Form, Input, Select } from 'antd';
 const { Option } = Select;
 
 const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
+    const [madetai, setMadetai] = useState('');
     const [tendetai, setTendetai] = useState('');
     const [tenchunhiem, setTenchunhiem] = useState('');
     const [cqchutri, setCqchutri] = useState('');
     const [cqtrienkhai, setCqtrienkhai] = useState('');
+    const [kinhphichutri, setKinhphichutri] = useState(0);
+    const [kinhphitrienkhai, setKinhphitrienkhai] = useState(0);
     const [linhvuc, setLinhvuc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (editDetai != null) {
-            let { tendetai, tenchunhiem, cqchutri, cqtrienkhai, linhvuc } = editDetai;
+            let { madetai, tendetai, tenchunhiem, cqchutri, cqtrienkhai, linhvuc, kinhphichutri, kinhphitrienkhai } = editDetai;
+            setMadetai(madetai)
             setTendetai(tendetai);
             setTenchunhiem(tenchunhiem);
             setCqchutri(cqchutri);
             setCqtrienkhai(cqtrienkhai);
+            setKinhphichutri(kinhphichutri);
+            setKinhphitrienkhai(kinhphitrienkhai);
             setLinhvuc(linhvuc);
         }
     }, [editDetai])
 
     useEffect(() => {
+        setMadetai('');
         setTendetai('');
         setTenchunhiem('');
         setCqchutri('');
         setCqtrienkhai('');
+        setKinhphichutri(0);
+        setKinhphitrienkhai(0);
         setLinhvuc('');
     }, [])
+
+    const handleMadetaiChange = (e) => {
+        setMadetai(e.target.value);
+    }
 
     const handleTendetaiChange = (e) => {
         setTendetai(e.target.value);
@@ -48,6 +61,14 @@ const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
         setCqtrienkhai(e.target.value);
     }
 
+    const handleKinhphichutriChange = (e) => {
+        setKinhphichutri(e.target.value);
+    }
+
+    const handleKinhphitrienkhaiChange = (e) => {
+        setKinhphitrienkhai(e.target.value);
+    }
+
     const handleLinhvucChange = (val) => {
         setLinhvuc(val);
     }
@@ -57,10 +78,13 @@ const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
         let { id } = editDetai;
         let data = {
             id,
+            madetai,
             tendetai,
             tenchunhiem,
             cqchutri,
             cqtrienkhai,
+            kinhphichutri,
+            kinhphitrienkhai,
             linhvuc,
             _method: "PUT"
         }
@@ -88,7 +112,7 @@ const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
             } else {
                 message.error("Lỗi hệ thống");
             }
-        }).then(() => { setIsLoading(false);})
+        }).then(() => { setIsLoading(false); })
     }
 
     return (
@@ -122,6 +146,21 @@ const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
                 wrapperCol={{ span: 17 }}
                 name="basic"
             >
+                <Form.Item
+                    label="Mã đề tài"
+                    name="madetai"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Mã đề tài không được để trống',
+                        },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleMadetaiChange}
+                    initialValue={madetai}
+                >
+                    <Input />
+                </Form.Item>
                 <Form.Item
                     label="Tên đề tài"
                     name="tendetai"
@@ -179,6 +218,36 @@ const EditModal = ({ isOpen, hide, editDetai, changeEditedDetai }) => {
                     // style={{ marginBottom: '5px' }}
                     onChange={handleCqtrienkhaiChange}
                     initialValue={cqtrienkhai}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Kinh phí chủ trì"
+                    name="kinhphichutri"
+                    rules={[
+                        // {
+                        //     required: true,
+                        //     message: 'Mã đề tài không được để trống',
+                        // },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleKinhphichutriChange}
+                    initialValue={kinhphichutri}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Kinh phí triển khai"
+                    name="kinhphitrienkhai"
+                    rules={[
+                        // {
+                        //     required: true,
+                        //     message: 'Mã đề tài không được để trống',
+                        // },
+                    ]}
+                    // style={{ marginBottom: '5px' }}
+                    onChange={handleKinhphitrienkhaiChange}
+                    initialValue={kinhphitrienkhai}
                 >
                     <Input />
                 </Form.Item>

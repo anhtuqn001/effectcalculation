@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Detai;
 use App\DetaiTieuchi;
+use Illuminate\Database\Eloquent\Collection;
 
 class DetaiController extends Controller
 {
@@ -24,10 +25,13 @@ class DetaiController extends Controller
     public function store(Request $request) {
         try {
             $detai = new Detai;
+            $detai->madetai = $request->input('madetai');
             $detai->tendetai = $request->input('tendetai');
             $detai->tenchunhiem = $request->input('tenchunhiem');
             $detai->cqchutri = $request->input('cqchutri');
             $detai->cqtrienkhai = $request->input('cqtrienkhai');
+            $detai->kinhphichutri = $request->input('kinhphichutri');
+            $detai->kinhphitrienkhai = $request->input('kinhphitrienkhai');
             $detai->linhvuc = $request->input('linhvuc');
             $detai->save();
             $detai->tieuchis()->sync([1,2,3,4,5,6,7]);
@@ -71,10 +75,13 @@ class DetaiController extends Controller
        try {
        $id = $request->input('id');
        $detai = Detai::findOrFail($id);
+       $detai->madetai = $request->input('madetai');
        $detai->tendetai = $request->input('tendetai');
        $detai->tenchunhiem = $request->input('tenchunhiem');
        $detai->cqchutri = $request->input('cqchutri');
        $detai->cqtrienkhai = $request->input('cqtrienkhai');
+       $detai->kinhphichutri = $request->input('kinhphichutri');
+       $detai->kinhphitrienkhai = $request->input('kinhphitrienkhai');
        $detai->linhvuc = $request->input('linhvuc');
        $detai->save();
        } catch (Exception $e) {
@@ -152,4 +159,42 @@ class DetaiController extends Controller
         ], 200);
     }
 
+    public function getDetaiExpenses() {
+        try {
+            $detais = Detai::all();
+            foreach($detais as $detai) {
+                $detai->grade = $detai->getGrade();
+                $detai->tongkinhphi = $detai->getTotalExpense();
+            }
+            $groupedDetais = $detais->sortBy('grade')->groupBy(['grade', 'linhvuc']);
+            $linhvucGroupedDetais = $detais->groupBy('linhvuc');
+        } catch (Exception $e) {
+            return response()->json([
+                'error'=> $e->getMessage()
+            ], 500);
+        }
+        return response()->json([
+            'groupedDetais' => $groupedDetais,
+            'linhvucGroupedDetais' => $linhvucGroupedDetais
+        ], 200);
+    }
+
+    public function getCountedDetais() {
+        try {
+            $detais = Detai::all();
+            foreach($detais as $detai) {
+                $detai->grade = $detai->getGrade();
+            }
+            $groupedDetais = $detais->sortBy('grade')->groupBy(['grade', 'linhvuc']);
+            $linhvucGroupedDetais = $detais->groupBy('linhvuc');
+        } catch (Exception $e) {
+            return response()->json([
+                'error'=> $e->getMessage()
+            ], 500);
+        }
+        return response()->json([
+            'groupedDetais' => $groupedDetais,
+            'linhvucGroupedDetais' => $linhvucGroupedDetais
+        ], 200);
+    }
 }
