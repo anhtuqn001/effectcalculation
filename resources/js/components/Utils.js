@@ -617,7 +617,8 @@ function handleLoaithanhphan1(thanhphan) {
     let thanhphanComment = '';
     if (diemthanhphan1 > 0) {
         if (subinfos.length > 0) {
-            thanhphanComment += subinfos[additional1 || additional5].danhgia;
+            let index = additional1 != null ? additional1 : additional5; 
+            thanhphanComment += subinfos[index].danhgia;
             thanhphanComment += '; ';
         } else {
             thanhphanComment += danhgia;
