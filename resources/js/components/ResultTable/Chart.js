@@ -15,7 +15,7 @@ const ResultChart = ({ chartData }) => {
     <Row style={{ display: 'flex', justifyContent: 'center' }}>
       <BarChart width={1200} height={400} data={chartData} barSize={100} margin={{top: 15}}>
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis type="number" domain={[0, 100]}/>
         <Bar
         dataKey="score"
         label={{ position: 'top' }}>

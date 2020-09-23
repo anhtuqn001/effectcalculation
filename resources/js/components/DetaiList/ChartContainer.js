@@ -80,7 +80,7 @@ const ChartContainer = ({ isShown, hide, currentDetais, getDetaiName }) => {
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <BarChart width={1200} height={500} data={dataChart} barSize={100} margin={{ top: 15 }}>
                         <XAxis dataKey="name" />
-                        <YAxis />
+                        <YAxis type="number" domain={[0, 100]} />
                         <Tooltip content={<CustomTooltip getDetaiName={getDetaiName}/>} wrapperStyle={{ width: 300, backgroundColor: '#ccc' }}/>
                         <Bar
                             dataKey="score"
