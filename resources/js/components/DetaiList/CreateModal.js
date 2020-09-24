@@ -189,12 +189,6 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
                 <Form.Item
                     label="Kinh phí chủ trì"
                     name="kinhphichutri"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Kinh phí chủ trì không được để trống',
-                        },
-                    ]}
                     // style={{ marginBottom: '5px' }}
                     onChange={handleKinhphichutriChange}
                 >
@@ -203,12 +197,6 @@ const CreateModal = ({ isOpen, hide, appendNewDetai }) => {
                 <Form.Item
                     label="Kinh phí triển khai"
                     name="kinhphitrienkhai"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Kinh phí triển khai không được để trống',
-                        },
-                    ]}
                     // style={{ marginBottom: '5px' }}
                     onChange={handleKinhphitrienkhaiChange}
                 >

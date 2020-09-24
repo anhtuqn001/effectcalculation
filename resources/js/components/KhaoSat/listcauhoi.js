@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { List, Typography, Divider, Radio, Row, Input, Col, Button, message, Select, Tooltip } from 'antd';
-const { Text } = Typography;
+
 import { calculateThanhphanScore, calculateTieuchiScore, calculateDetaiScore, flattenThanhphans, checkIfDone, getThanhphanOptions } from '../Utils.js'
 import {
     useParams,
@@ -12,6 +12,7 @@ import {
 import { LeftOutlined, QuestionCircleFilled } from '@ant-design/icons';
 
 const { Option } = Select;
+const { Text } = Typography;
 
 const styles = {
     radioStyles: {
@@ -434,6 +435,9 @@ const CauhoiItem = ({ donvi, thanhphan, handleOnAnswer, handleOnSubAnswer, reset
                                     {thanhphan.subinfos.map((item, index) => <Radio style={styles.radioStyles} value={index}>{item.title}</Radio>)}
                                 </Radio.Group>
                             </Col>
+                            <Col span={12} offset={1} style={{display:'flex', alignItems:'center'}}>
+                                <Text type="warning">(Vui lòng chọn giá trị, không để trống)</Text>
+                            </Col>
                         </Row> :
                         <React.Fragment>
                             <Row>
@@ -441,6 +445,9 @@ const CauhoiItem = ({ donvi, thanhphan, handleOnAnswer, handleOnSubAnswer, reset
                                 <Col span={9}>
                                     {thanhphan.subinfos.map((item, index) => <div key={index}>{item.title} <Input value={index == 0 ? subValue1 : (index == 1 ? subValue2 : (index == 2 ? subValue3 : subValue4))} onChange={(e) => { onSubInputChange(e, index + 1) }} /></div>)}
                                 </Col>
+                                <Col span={12} offset={1} style={{display:'flex', alignItems:'center'}}>
+                                <Text type="warning">(Nếu giá trị bằng 0 thì điền 0, vui lòng không để trống)</Text>
+                            </Col>
                             </Row>
                         </React.Fragment>)}
                 </Col>
